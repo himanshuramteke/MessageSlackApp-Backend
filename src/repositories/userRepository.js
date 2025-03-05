@@ -10,7 +10,14 @@ const userRepository = {
     },
     
     getByUsername: async function (username) {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username }).select('-password'); //exclude password field
+        return user;
+    },
+
+    findByEmailOrUsername: async function (email, username) {
+        const user = await User.findOne({
+            $or: [{ email }, { username }]
+        }).select('-password');
         return user;
     }
 };
