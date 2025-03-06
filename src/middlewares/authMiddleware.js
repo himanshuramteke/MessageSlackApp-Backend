@@ -1,7 +1,9 @@
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
-import { customErrorResponse, internalErrorResponse } from "../utils/common/responseObjects.js";
+
 import { JWT_SECRET } from "../config/serverConfig.js";
+import userRepository from "../repositories/userRepository.js"
+import { customErrorResponse, internalErrorResponse } from "../utils/common/responseObjects.js";
 
 export const isAuthenticated = async (req, res, next) => {
     try {
