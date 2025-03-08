@@ -2,14 +2,14 @@ import { StatusCodes } from 'http-status-codes';
 
 import crudRepository from '../repositories/crudRepository.js'
 import User from "../schema/users.schema.js"
-import WorkSpace from "../schema/workspace.schema.js"
+import Workspace from "../schema/workspace.schema.js"
 import ClientError from '../utils/errors/clientError.js'
 import channelRepository from './channelRepository.js';
 
 const workspaceRepository = {
-    ...crudRepository(WorkSpace),
+    ...crudRepository(Workspace),
     getWorkspaceByName: async function (workspacename) {
-        const workspace = await WorkSpace.findOne({
+        const workspace = await Workspace.findOne({
             name: workspacename
         });
 
@@ -24,7 +24,7 @@ const workspaceRepository = {
         return workspace;
     },
     getWorkspaceByJoinCode: async function (joinCode) {
-        const workspace = await WorkSpace.findOne({
+        const workspace = await Workspace.findOne({
             name: joinCode
         });
 
@@ -39,7 +39,7 @@ const workspaceRepository = {
         return workspace;
     },
     addMemberToWorkspace: async function (workspaceId, memberId, role) {
-        const workspace = await WorkSpace.findById(workspaceId);
+        const workspace = await Workspace.findById(workspaceId);
 
         if (!workspace) {
             throw new ClientError({
@@ -59,7 +59,7 @@ const workspaceRepository = {
         }
 
         const isMemberAlreadyPartOfWorkspace = workspace.members.find(
-            (member) => member.membersId == memberId
+            (member) => member.memberId && member.memberId.toString() === memberId.toString()
         );
 
         if(isMemberAlreadyPartOfWorkspace) {
@@ -71,7 +71,7 @@ const workspaceRepository = {
         }
 
         workspace.members.push({
-            memberId,
+            memberId: memberId,
             role
         });
 
@@ -79,7 +79,7 @@ const workspaceRepository = {
         return workspace;
     },
     addChannelToWorkspace: async function (workspaceId, channelName) {
-        const workspace = await WorkSpace.findById(workspaceId).populate('channels');
+        const workspace = await Workspace.findById(workspaceId).populate('channels');
 
         if(!workspace) {
             throw new ClientError({
@@ -109,7 +109,7 @@ const workspaceRepository = {
         return workspace;
     },
     fetchAllWorkspaceByMemberId: async function ( memberId ) {
-        const workspaces = await WorkSpace.find({
+        const workspaces = await Workspace.find({
             'members.memberId': memberId
         }).populate('members.memberId', 'username email avatar');
 

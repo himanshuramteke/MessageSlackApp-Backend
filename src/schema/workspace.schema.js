@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const workspaceSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'WorkSpace name is required'],
+        required: [true, 'Workspace name is required'],
         unique: true
     },
     description: {
@@ -11,7 +11,7 @@ const workspaceSchema = new mongoose.Schema({
     },
     members: [
         {
-            membersId: {
+            memberId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User'
             },
@@ -35,6 +35,6 @@ const workspaceSchema = new mongoose.Schema({
 
 });
 
-const WorkSpace = mongoose.model('WorkSpace', workspaceSchema);
+const Workspace = mongoose.model('Workspace', workspaceSchema);
 
-export default WorkSpace;
+export default Workspace;
