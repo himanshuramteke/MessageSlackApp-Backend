@@ -8,6 +8,13 @@ import channelRepository from './channelRepository.js';
 
 const workspaceRepository = {
     ...crudRepository(Workspace),
+    getWorkspaceDetailsById : async function (workspaceId) {
+      const workspace = await Workspace.findById(workspaceId)
+         .populate('members.memberId', 'username email avatar')
+         .populate('channels');
+
+        return workspace;
+    },
     getWorkspaceByName: async function (workspacename) {
         const workspace = await Workspace.findOne({
             name: workspacename
@@ -101,7 +108,7 @@ const workspaceRepository = {
             });
         }
 
-        const channel = await channelRepository.create({ name: channelName });
+        const channel = await channelRepository.create({ name: channelName, workspaceId: workspaceId });
 
         workspace.channels.push(channel);
         await workspace.save();
