@@ -2,9 +2,8 @@ import express from 'express';
 
 import { addChannelToWorkspaceController, addMemberToWorkspaceController, createWorkspaceController, deleteWorkspaceController, getWorkspaceByJoinCodeController, getWorkspaceController, getWorkspacesUserIsMemberOfController, updateWorkspaceController } from '../../controllers/workspaceController.js';
 import { isAuthenticated } from '../../middlewares/authMiddleware.js';
-import { createWorkspaceSchema } from '../../validators/workspaceValidators.js';
-import { validate } from '../../validators/zodValidators.js';
 import { addChannelToWorkspaceSchema, addMemberToWorkspaceSchema, createWorkspaceSchema } from '../../validators/workspaceValidators.js';
+import { validate } from '../../validators/zodValidators.js';
 
 const router = express.Router();
 
