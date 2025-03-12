@@ -1,11 +1,13 @@
 import express from 'express';
-import { StatusCodes } from 'http-status-codes';
 import { createServer } from 'http';
+import { StatusCodes } from 'http-status-codes';
 import { Server } from 'socket.io';
 
 import bullServerAdapter from './config/bullBoardConfig.js'; 
 import connectDB from './config/dbConfig.js';
 import { PORT } from './config/serverConfig.js';
+import MessageSocketHandler from './controllers/messageSocketControllers.js';
+import ChannelSocketHandler from './controllers/channelSocketController.js';
 import apiRouter from './routes/apiRouter.js'
 
 const app = express();
@@ -27,13 +29,9 @@ app.get('/ping', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('a user is connected', socket.id);
-  
-  socket.on('messageFromClient', (data) => {
-    console.log('Message from client', data);
-    
-    io.emit('new message', data.toUpperCase());
-  });
+   console.log('a user is connected', socket.id);
+   MessageSocketHandler(io, socket);
+   ChannelSocketHandler(io, socket);
 });
 
 server.listen(PORT, () => {
