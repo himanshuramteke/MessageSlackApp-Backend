@@ -6,8 +6,8 @@ import { Server } from 'socket.io';
 import bullServerAdapter from './config/bullBoardConfig.js'; 
 import connectDB from './config/dbConfig.js';
 import { PORT } from './config/serverConfig.js';
-import MessageSocketHandler from './controllers/messageSocketControllers.js';
 import ChannelSocketHandler from './controllers/channelSocketController.js';
+import MessageSocketHandler from './controllers/messageSocketControllers.js';
 import apiRouter from './routes/apiRouter.js'
 
 const app = express();
