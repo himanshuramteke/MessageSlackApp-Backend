@@ -198,7 +198,7 @@ export const updateWorkspaceService = async (workspaceId, workspaceData, userId)
 
 export const resetWorkspaceJoinCodeService = async (workspaceId, userId) => {
   try {
-    const newJoinCode = uuidv4.substring(0, 6).toUpperCase();
+    const newJoinCode = uuidv4().substring(0, 6).toUpperCase();
     const updatedWorkspace = await updateWorkspaceService(
       workspaceId, 
       {
@@ -295,6 +295,38 @@ export const addChannelToWorkspaceService = async (workspaceId, channelName, use
     return response;
   } catch (error) {
     console.log('Add channel to workspace service error', error);
+    throw error;
+  }
+}
+
+export const joinWorkspaceService = async(workspaceId, joinCode, userId) => {
+  try {
+    const workspace = await workspaceRepository.getWorkspaceDetailsById(workspaceId);
+    if(!workspace) {
+      throw new ClientError({
+        explanation: 'Invalid data sent from the client',
+        message: 'Workspace not found',
+        statusCode: StatusCodes.NOT_FOUND
+      });
+    }
+
+    if (workspace.joinCode !== joinCode) {
+      throw new ClientError({
+        explanation: 'Invalid data sent from the client',
+        message: 'Invalid join code',
+        statusCode: StatusCodes.UNAUTHORIZED
+      });
+    }
+
+    const updatedWorkspace = await workspaceRepository.addMemberToWorkspace(
+      workspaceId,
+      userId,
+      'member'
+    );
+
+    return updatedWorkspace;
+  } catch (error) {
+    console.log('joinWorkspaceService error', error);
     throw error;
   }
 }
