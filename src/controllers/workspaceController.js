@@ -68,10 +68,10 @@ export const getWorkspaceController = async (req, res) => {
         const response = await getWorkspaceService(
             req.params.workspaceId,
             req.user
-           );
-           return res
-              .status(StatusCodes.OK)
-              .json(successResponse(response, 'Get workspace successfully')) ;
+        );
+          return res
+            .status(StatusCodes.OK)
+            .json(successResponse(response, 'Get workspace successfully'));
     } catch (error) {
         console.log('Get workspace controller error',error);
         if(error.statusCode) {

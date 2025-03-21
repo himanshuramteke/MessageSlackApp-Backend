@@ -11,21 +11,22 @@ import ValidationError from '../utils/errors/validationError.js';
 
 
 const isUserAdminOfWorkspace = (workspace, userId) => {
+  console.log(workspace.members, userId);
   const response = workspace.members.find(
     (member) =>
       (member.memberId.toString() === userId ||
         member.memberId._id.toString() === userId) &&
       member.role === 'admin'
   );
-  console.log(response);
   return response;
 };
 
 export const isUserMemberOfWorkspace = (workspace, userId) => {
-  return workspace.members.find(
-    (member) => member.memberId.toString() === userId
-  );
-}
+  return workspace.members.find((member) => {
+    console.log('member id ', member.memberId.toString());
+    return member.memberId._id.toString() === userId
+  })
+};
 
 const isChannelAlreadyPartOfWorkspace = (workspace, channelName) => {
   return workspace.channels.find(
@@ -119,7 +120,7 @@ export const deleteWorkspaceService = async(workspaceId, userId) => {
 
 export const getWorkspaceService = async (workspaceId, userId) => {
   try {
-    const workspace = await workspaceRepository.getById(workspaceId)
+    const workspace = await workspaceRepository.getWorkspaceDetailsById(workspaceId)
     if(!workspace) {
       throw new ClientError({
         explanation: 'Invalid data sent from the client',

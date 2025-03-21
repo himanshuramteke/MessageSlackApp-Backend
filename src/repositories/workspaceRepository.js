@@ -1,19 +1,19 @@
 import { StatusCodes } from 'http-status-codes';
 
-import crudRepository from '../repositories/crudRepository.js'
-import User from "../schema/users.schema.js"
-import Workspace from "../schema/workspace.schema.js"
-import ClientError from '../utils/errors/clientError.js'
+import crudRepository from '../repositories/crudRepository.js';
+import User from "../schema/users.schema.js";
+import Workspace from "../schema/workspace.schema.js";
+import ClientError from '../utils/errors/clientError.js';
 import channelRepository from './channelRepository.js';
 
 const workspaceRepository = {
     ...crudRepository(Workspace),
     getWorkspaceDetailsById : async function (workspaceId) {
-      const workspace = await Workspace.findById(workspaceId)
-         .populate('members.memberId', 'username email avatar')
-         .populate('channels');
+        const workspace = await Workspace.findById(workspaceId)
+          .populate('members.memberId', 'username email avatar')
+          .populate('channels');
 
-        return workspace;
+         return workspace;
     },
     getWorkspaceByName: async function (workspacename) {
         const workspace = await Workspace.findOne({
