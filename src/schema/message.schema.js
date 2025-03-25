@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema({
+const messageSchema = new mongoose.Schema(
+    {
     body: {
         type: String,
         required: [true, 'Message body is required']
@@ -23,7 +24,9 @@ const messageSchema = new mongoose.Schema({
         ref: 'Workspace',
         required: [true, 'Workspace ID is required']
     }
-});
+},  
+   { timestamps: true }
+);
 
 const Message = mongoose.model('Message', messageSchema);
 

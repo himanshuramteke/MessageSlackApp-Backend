@@ -21,9 +21,20 @@ export const getMessagesService = async (messageParams, page, limit, user) => {
         statusCode: StatusCodes.UNAUTHORIZED
     });
    }
-}
+
+   const messages = await messageRepository.getPaginatedMessaged(
+      messageParams,
+      page,
+      limit
+   );
+   return messages;
+};
 
 export const createMessageService = async (message) => {
    const newMessage = await messageRepository.create(message);
-   return newMessage;
-}
+
+   const messageDetails = await messageRepository.getMessageDetails(
+      newMessage._id
+   )
+   return messageDetails;
+}  
