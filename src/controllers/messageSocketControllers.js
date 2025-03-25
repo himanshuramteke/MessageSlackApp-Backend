@@ -10,6 +10,7 @@ import {
       const { channelId } = data;
       const messageResponse = await createMessageService(data);
       //socket.broadcast.emit(NEW_MESSAGE_RECEIVED_EVENT, messageResponse);
+      console.log('Channel', channelId); 
       io.to(channelId).emit(NEW_MESSAGE_RECEIVED_EVENT, messageResponse); //Impelmentation of rooms
       cb({
         success: true,

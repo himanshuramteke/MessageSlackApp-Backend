@@ -20,7 +20,8 @@ export const getChannelByIdService = async (channelId, userId) => {
         }
     
         const isUserPartOfWorkspace = isUserMemberOfWorkspace(
-            channelId.workspaceId, userId
+            channel.workspaceId, 
+            userId
         );
 
         if(!isUserPartOfWorkspace) {
